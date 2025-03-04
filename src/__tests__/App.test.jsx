@@ -4,12 +4,10 @@ import App from '../App'
 
 // Before each test, mock fetch to return a test joke
 beforeEach(() => {
-  global.fetch = jest.fn(() =>
+  global.fetch = vi.fn(() =>
     Promise.resolve({
       json: () =>
-        Promise.resolve({
-          joke: 'Why do programmers prefer dark mode? Because light attracts bugs!',
-        }),
+        Promise.resolve({ joke: 'Why do programmers prefer dark mode?' }),
     })
   )
 })
