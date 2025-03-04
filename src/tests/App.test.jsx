@@ -1,5 +1,18 @@
+import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import App from '../App'
+
+// Before each test, mock fetch to return a test joke
+beforeEach(() => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () =>
+        Promise.resolve({
+          joke: 'Why do programmers prefer dark mode? Because light attracts bugs!',
+        }),
+    })
+  )
+})
 
 test('displays a loading message before joke is loaded', async () => {
   render(<App />)
@@ -8,7 +21,10 @@ test('displays a loading message before joke is loaded', async () => {
 
 test('fetches and displays a joke on load', async () => {
   render(<App />)
-  const jokeElement = await screen.findByText(/.*/i)
+  // Find and check the joke that should be displayed
+  const jokeElement = await screen.findByText(
+    /Why do programmers prefer dark mode?/i
+  )
   expect(jokeElement).toBeInTheDocument()
 })
 
@@ -16,7 +32,16 @@ test('fetches a new joke when button is clicked', async () => {
   render(<App />)
   const button = screen.getByRole('button', { name: /Get a New Joke/i })
 
+  // Mock a new joke response when fetch is called again
+  fetch.mockImplementationOnce(() =>
+    Promise.resolve({
+      json: () => Promise.resolve({ joke: 'Another programming joke!' }),
+    })
+  )
+
   fireEvent.click(button)
-  const newJokeElement = await screen.findByText(/.*/i)
+
+  // Check if the new joke appears
+  const newJokeElement = await screen.findByText(/Another programming joke!/i)
   expect(newJokeElement).toBeInTheDocument()
 })
