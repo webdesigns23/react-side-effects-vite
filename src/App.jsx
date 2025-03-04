@@ -1,34 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
+import JokeDisplay from './components/JokeDisplay'
+import FetchButton from './components/FetchButton'
+
+const API_URL = 'https://v2.jokeapi.dev/joke/Programming?type=single'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [joke, setJoke] = useState('')
+  const [loading, setLoading] = useState(true)
+
+  // Fetch a joke when the component mounts
+  useEffect(() => {
+    fetchJoke()
+  }, [])
+
+  const fetchJoke = () => {
+    setLoading(true)
+    fetch(API_URL)
+      .then((response) => response.json())
+      .then((data) => {
+        setJoke(data.joke)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error('Error fetching joke:', error)
+        setLoading(false)
+      })
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app">
+      <h1>Programming Jokes</h1>
+      <JokeDisplay joke={joke} loading={loading} />
+      <FetchButton fetchJoke={fetchJoke} />
+    </div>
   )
 }
 
