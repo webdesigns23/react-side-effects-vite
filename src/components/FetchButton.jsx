@@ -1,8 +1,10 @@
-import React from 'react'
+// Step 1: Accept `fetchJoke` as a prop
 
-// ❌ No onClick handler → students need to implement it
-const FetchButton = () => {
-  return <button className="fetch-button">Get a New Joke</button>
+const FetchButton = ({ fetchJoke }) => {
+  return (
+    // Step 2: Add an onClick event that calls `fetchJoke`
+    <button className="fetch-button">Get a New Joke</button>
+  )
 }
 
 export default FetchButton

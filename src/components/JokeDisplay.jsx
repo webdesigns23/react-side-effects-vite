@@ -1,11 +1,10 @@
-import React from 'react'
+// Step 1: Accept `joke` and `loading` as props
 
-// ❌ Joke is not displayed properly
 const JokeDisplay = ({ joke, loading }) => {
   return (
     <div className="joke-container">
-      {/* ❌ Joke is missing → students need to fix this */}
-      {loading ? <p>Loading...</p> : <p>Joke not available</p>}
+      {/* Step 2: If `loading` is true, display "Loading..." */}
+      {/* Step 3: Otherwise, display the joke */}
     </div>
   )
 }
